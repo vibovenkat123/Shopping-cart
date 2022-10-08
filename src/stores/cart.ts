@@ -1,10 +1,10 @@
 import { writable, type Writable } from 'svelte/store';
-import rocketImg from '../images/rocket-fuel.jpg'
-import bananaImg from '../images/banana.jpg'
-import planeImg from '../images/plane.jpg'
-import earthImg from '../images/earth.jpg'
-import crayonImg from '../images/crayons.jpg'
-import frogImg from '../images/frog.jpg'
+import rocketImg from '../images/rocket-fuel.jpeg'
+import bananaImg from '../images/banana.jpeg'
+import planeImg from '../images/plane.jpeg'
+import earthImg from '../images/earth.jpeg'
+import crayonImg from '../images/crayons.jpeg'
+import frogImg from '../images/frog.jpeg'
 
 type productsArray = { name: string; price: string; id: number; description?: string, src:string}[];
 const formatter = new Intl.NumberFormat('en-US', {

@@ -21,7 +21,7 @@
           {/if}
           <p class="text-slate-900 text-lg">Price: {product.price}</p>
         </div>
-        <button class="text-2xl text-white bg-slate-500 rounded-md p-1 mb-1 sm:mt-8 thicc:mt-5 hover:bg-white hover:text-slate-500 hover:border-slate-500 hover:border-2" on:click={() => {
+        <button class="text-2xl text-white bg-slate-500 rounded-md p-1 sm:mt-7 thicc:mt-4 hover:bg-white hover:text-slate-500 border-2 border-slate-500" on:click={() => {
           addToCart(product.id)
         }}>Add To Cart</button>
       </div>
