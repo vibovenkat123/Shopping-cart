@@ -20,13 +20,22 @@
 	function removeItem(id: number, price: number) {
 		for (const i in $cart) {
 			if ($cart[i].id == id) {
-				cart.update((n) => {
+				if ($cart[i].quantity <= 1){
+					console.log(i)
+					cart.update(n => {
+						n.splice(parseInt(i), 1)
+						return n
+					})
+				} else {
+					cart.update((n) => {
 					n[i].quantity--;
 					return n;
-				});
+				})
+				total.update((n) => n - price);
+				break;
+				}
 			}
 		}
-		total.update((n) => n - price);
 	}
 	let companyName = company.name;
 	let modal: HTMLDialogElement;
@@ -85,7 +94,7 @@
 						<div
 							class="border-4 border-black h-80 w-58 rounded-md flex flex-col items-center overflow-auto text-center sm:h-96"
 						>
-							<img src={products[index.id].src} alt={products[index.id].name} class="h-56 w-full" />
+							<img src={products[index.id].src} alt={products[index.id].name} class="h-48 w-full" />
 							<div>
 								<h1 class="text-3xl font-bold text-slate-100">{products[index.id].name}</h1>
 								<p class="text-slate-50 text-lg">Price: {products[index.id].price}</p>
