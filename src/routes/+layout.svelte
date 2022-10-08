@@ -16,12 +16,14 @@
 		href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0"
 	/>
 	<header class="bg-black flex justify-center h-24">
-		<div class="flex w-full justify-between items-center p-4 w-3/4 text-white">
-			<a href="/" class="w-full">
-				<h1 class="text-5xl font-RobotoM font-normal" aria-label="xoringer">
-					{companyName}
-				</h1>
-			</a>
+		<div class="flex w-full justify-center items-center p-4 w-3/4 text-white flex-col">
+			<div>
+        <a href="/" class="w-full">
+          <h1 class="text-5xl font-RobotoM font-normal" aria-label="xoringer">
+            {companyName}
+          </h1>
+        </a>
+      </div>
 			<nav class="w-full flex justify-between items-center gap-7 text-2xl">
 				<a href="/">Home</a>
 				<a href="/Shop">Shop</a>
