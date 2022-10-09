@@ -106,7 +106,7 @@
 				>
 				<div>
 					<button aria-label="cart" on:click={showCart}>
-						<span class="material-symbols-outlined" style="font-size: 32px;" aria-hidden="true">
+						<span class="material-symbols-outlined align-bottom" style="font-size: 28px;" aria-hidden="true">
 							shopping_cart
 						</span>
 					</button>
@@ -115,7 +115,7 @@
 		</div>
 	</header>
 	<div class="space wave-down" />
-	<dialog class="bg-nord2 text-nord6 border-2 border-nord6" bind:this={modal}>
+	<dialog class="bg-nord2 text-nord6 border-2 w-96 border-nord6" bind:this={modal}>
 		<div class="overflow-auto">
 			<button on:click={closeCart}> <span class="material-symbols-outlined"> close </span></button>
 			<h1 class="text-3xl">Cart:</h1>
@@ -170,7 +170,7 @@
 
 <style scoped>
 	.space {
-		aspect-ratio: 960/100;
+		aspect-ratio: 960/95;
 		width: 100%;
 		background-repeat: no-repeat;
 		background-position: center;

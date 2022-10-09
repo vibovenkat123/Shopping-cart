@@ -4,10 +4,10 @@
 
 <main>
 	<script src="https://cdn.jsdelivr.net/npm/kute.js@2.2.4/dist/kute.min.js"></script>
-	<div class="h-screen bg-norddarkest p-2">
+	<div class="h-screen overflow-hidden w-full bg-norddarkest p-4">
 		<div class="space bg-home rotate-180" />
 		<div class="flex items-center flex-col nordBg mt-32 w-full h-full lg:mt-24">
-			<h1 class="text-4xl sm:text-5xl md:text-6xl thicc:text-7xl mt-3 font-RobotoM text-nord6 z-10">
+			<h1 class="text-3xl sm:text-5xl md:text-6xl thicc:text-7xl mt-3 font-RobotoM text-nord6 z-10">
 				Welcome To {company.name}
 			</h1>
 			<h2 class="text-2xl sm:text-3xl md:text-4xl thicc:text-5xl mt-5 font-RobotoM text-nord6 z-10">
