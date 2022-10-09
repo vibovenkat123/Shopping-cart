@@ -5,7 +5,7 @@
 	import { products } from '../stores/cart';
 	import { formatter } from '../stores/cart';
 	import { total } from '../stores/cart';
-	
+
 	let homeActive = 'underline';
 	let productsActive = 'none';
 	function addItem(id: number, price: number) {
@@ -22,19 +22,19 @@
 	function removeItem(id: number, price: number) {
 		for (const i in $cart) {
 			if ($cart[i].id == id) {
-				if ($cart[i].quantity <= 1){
-					console.log(i)
-					cart.update(n => {
-						n.splice(parseInt(i), 1)
-						return n
-					})
+				if ($cart[i].quantity <= 1) {
+					console.log(i);
+					cart.update((n) => {
+						n.splice(parseInt(i), 1);
+						return n;
+					});
 				} else {
 					cart.update((n) => {
-					n[i].quantity--;
-					return n;
-				})
-				total.update((n) => n - price);
-				break;
+						n[i].quantity--;
+						return n;
+					});
+					total.update((n) => n - price);
+					break;
 				}
 			}
 		}
@@ -74,14 +74,22 @@
 				</a>
 			</div>
 			<nav class="w-full flex justify-between items-center gap-7 text-2xl">
-				<a href="/"  style="text-decoration: {homeActive}; text-underline-offset: 8px;" on:click={() => {
-					homeActive = 'underline'
-					productsActive = 'none'
-				}}>Home</a>
-				<a href="/Shop"  on:click={() => {
-					productsActive = 'underline'
-					homeActive = 'none'
-				}} style="text-decoration: {productsActive}; text-underline-offset: 8px;">Shop</a>
+				<a
+					href="/"
+					style="text-decoration: {homeActive}; text-underline-offset: 8px;"
+					on:click={() => {
+						homeActive = 'underline';
+						productsActive = 'none';
+					}}>Home</a
+				>
+				<a
+					href="/Shop"
+					on:click={() => {
+						productsActive = 'underline';
+						homeActive = 'none';
+					}}
+					style="text-decoration: {productsActive}; text-underline-offset: 8px;">Shop</a
+				>
 				<div>
 					<button aria-label="cart" on:click={showCart}>
 						<span class="material-symbols-outlined" style="font-size: 32px;" aria-hidden="true">
@@ -92,7 +100,7 @@
 			</nav>
 		</div>
 	</header>
-	<dialog class="bg-black text-white" bind:this={modal}>
+	<dialog class="bg-black text-white border-2 border-white" bind:this={modal}>
 		<div class="overflow-auto">
 			<button on:click={closeCart}> <span class="material-symbols-outlined"> close </span></button>
 			<h1 class="text-3xl">Cart:</h1>
