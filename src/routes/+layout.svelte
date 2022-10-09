@@ -5,9 +5,20 @@
 	import { products } from '../stores/cart';
 	import { formatter } from '../stores/cart';
 	import { total } from '../stores/cart';
-
-	let homeActive = 'underline';
-	let productsActive = 'none';
+	let homeActive: string;
+	let productsActive: string;
+	if (typeof location !== 'undefined') {
+		if (location.pathname == '/Shop') {
+			productsActive = 'underline';
+			homeActive = 'none';
+		} else if (location.pathname == '/') {
+			productsActive = 'none';
+			homeActive = 'underline';
+		} else {
+			productsActive = 'none';
+			homeActive = 'none';
+		}
+	}
 	function addItem(id: number, price: number) {
 		for (const i in $cart) {
 			if ($cart[i].id == id) {
@@ -34,6 +45,9 @@
 						return n;
 					});
 					total.update((n) => n - price);
+					if (isNaN($total)) {
+						total.set(Infinity);
+					}
 					break;
 				}
 			}
@@ -64,8 +78,8 @@
 		rel="stylesheet"
 		href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0"
 	/>
-	<header class="bg-black flex justify-center h-24">
-		<div class="flex justify-center items-center p-4 w-3/4 text-white flex-col">
+	<header class="bg-nord1 flex justify-center h-24">
+		<div class="flex justify-center items-center p-4 w-3/4 text-nord6 flex-col">
 			<div>
 				<a href="/" class="w-full">
 					<h1 class="text-5xl font-RobotoM font-normal" aria-label="xoringer">
@@ -100,7 +114,8 @@
 			</nav>
 		</div>
 	</header>
-	<dialog class="bg-black text-white border-2 border-white" bind:this={modal}>
+	<div class="space wave-down" />
+	<dialog class="bg-nord2 text-nord6 border-2 border-nord6" bind:this={modal}>
 		<div class="overflow-auto">
 			<button on:click={closeCart}> <span class="material-symbols-outlined"> close </span></button>
 			<h1 class="text-3xl">Cart:</h1>
@@ -108,14 +123,14 @@
 				<div class="h-96 overflow-auto">
 					{#each $cart as index}
 						<div
-							class="border-4 border-black h-80 w-58 rounded-md flex flex-col items-center overflow-auto text-center sm:h-96"
+							class="border-4 border-nord0 h-80 w-58 rounded-md flex flex-col items-center overflow-auto text-center sm:h-96"
 						>
 							<img src={products[index.id].src} alt={products[index.id].name} class="h-48 w-full" />
 							<div>
-								<h1 class="text-3xl font-bold text-slate-100">{products[index.id].name}</h1>
-								<p class="text-slate-50 text-lg">Price: {products[index.id].price}</p>
+								<h1 class="text-3xl font-bold text-nord6">{products[index.id].name}</h1>
+								<p class="text-nord6 text-lg">Price: {products[index.id].price}</p>
 							</div>
-							<button class="text-2xl text-white">
+							<button class="text-2xl text-nord6">
 								<div class="flex items-center  mt-3">
 									<div class="mr-3">
 										<button
@@ -152,3 +167,16 @@
 	</dialog>
 </main>
 <slot />
+
+<style scoped>
+	.space {
+		aspect-ratio: 960/100;
+		width: 100%;
+		background-repeat: no-repeat;
+		background-position: center;
+		background-size: cover;
+	}
+	.wave-down {
+		background-image: url('../images/waves-down.svg');
+	}
+</style>

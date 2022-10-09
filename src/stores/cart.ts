@@ -34,7 +34,7 @@ export const products: productsArray = [
 		name: '[LT] PLANES!!',
 		price: formatter.format(89_000_100),
 		id: id++,
-		description: 'Just a few million dollars :).',
+		description: 'Just a few million dollars.',
 		src: planeImg,
 		rawPrice: 89_000_100
 	},
