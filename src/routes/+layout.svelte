@@ -5,7 +5,9 @@
 	import { products } from '../stores/cart';
 	import { formatter } from '../stores/cart';
 	import { total } from '../stores/cart';
-
+	
+	let homeActive = 'underline';
+	let productsActive = 'none';
 	function addItem(id: number, price: number) {
 		for (const i in $cart) {
 			if ($cart[i].id == id) {
@@ -72,8 +74,14 @@
 				</a>
 			</div>
 			<nav class="w-full flex justify-between items-center gap-7 text-2xl">
-				<a href="/">Home</a>
-				<a href="/Shop">Shop</a>
+				<a href="/"  style="text-decoration: {homeActive}; text-underline-offset: 8px;" on:click={() => {
+					homeActive = 'underline'
+					productsActive = 'none'
+				}}>Home</a>
+				<a href="/Shop"  on:click={() => {
+					productsActive = 'underline'
+					homeActive = 'none'
+				}} style="text-decoration: {productsActive}; text-underline-offset: 8px;">Shop</a>
 				<div>
 					<button aria-label="cart" on:click={showCart}>
 						<span class="material-symbols-outlined" style="font-size: 32px;" aria-hidden="true">
