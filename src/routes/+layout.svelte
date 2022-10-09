@@ -39,6 +39,7 @@
 						n.splice(parseInt(i), 1);
 						return n;
 					});
+					total.update((n) => n - price);
 				} else {
 					cart.update((n) => {
 						n[i].quantity--;
