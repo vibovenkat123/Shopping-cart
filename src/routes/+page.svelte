@@ -4,7 +4,7 @@
 
 <main>
 	<script src="https://cdn.jsdelivr.net/npm/kute.js@2.2.4/dist/kute.min.js"></script>
-	<div class="h-screen overflow-hidden w-full bg-norddarkest p-4">
+	<div class="h-screen overflow-hidden w-screen bg-norddarkest p-4">
 		<div class="space bg-home rotate-180" />
 		<div class="flex items-center flex-col nordBg mt-32 w-full h-full lg:mt-24">
 			<h1 class="text-3xl sm:text-5xl md:text-6xl thicc:text-7xl mt-3 font-RobotoM text-nord6 z-10">
