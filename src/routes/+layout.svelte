@@ -4,9 +4,13 @@
 	import { cart } from '../stores/cart';	
 	import { total } from '../stores/cart';
 	import Login from '../components/Login.svelte'
+	import Profile from '../components/Profile.svelte';
+	import {signInWithPopup} from 'firebase/auth'
+	import {auth,provider} from '../firebase'
 
 	let homeActive: string;
 	let productsActive: string;
+	let user: any;
 	if (typeof location !== 'undefined') {
 		if (location.pathname == '/Shop') {
 			productsActive = 'underline';
@@ -105,6 +109,11 @@
 					}}
 					style="text-decoration: {productsActive}; text-underline-offset: 8px;">Shop</a
 				>
+				{#if $user}
+				<Profile name={$user.displayName} imageURL={$user.photoURL}/>
+			{:else}
+				<button on:click={() => {signInWithPopup(auth,provider)}}>Login</button>
+			{/if}
 				<div>
 					<button aria-label="cart" on:click={showCart}>
 						<span class="material-symbols-outlined align-bottom" style="font-size: 28px;" aria-hidden="true">
@@ -119,7 +128,7 @@
 	<dialog class="bg-nord3 text-nord6 border-2 w-96 border-nord6" bind:this={modal}>
 		<div class="overflow-auto p-2">
 			<button on:click={closeCart}> <span class="material-symbols-outlined"> close </span></button>
-			<Login addItem={addItem} removeItem={removeItem} />
+			<Login addItem={addItem} removeItem={removeItem} bind:user={user}/>
 		</div>
 	</dialog>
 </main>

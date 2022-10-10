@@ -9,7 +9,7 @@
 
   export let removeItem:Function;
   export let addItem:Function;
-  let user = authState(auth)
+  export let user = authState(auth);
   const login = () => {
     signInWithPopup(auth,provider)
   }
