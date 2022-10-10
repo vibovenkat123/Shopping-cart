@@ -14,6 +14,7 @@
 	"devDependencies": {
 		"@faker-js/faker": "^7.5.0",
 		"@sveltejs/adapter-auto": "next",
+		"@sveltejs/adapter-static": "^1.0.0-next.44",
 		"@sveltejs/kit": "next",
 		"@typescript-eslint/eslint-plugin": "^5.27.0",
 		"@typescript-eslint/parser": "^5.27.0",
@@ -32,5 +33,10 @@
 		"typescript": "^4.7.4",
 		"vite": "^3.1.0"
 	},
-	"type": "module"
+	"type": "module",
+	"dependencies": {
+		"firebase": "^9.11.0",
+		"rxfire": "^6.0.3",
+		"rxjs": "^7.5.7"
+	}
 }

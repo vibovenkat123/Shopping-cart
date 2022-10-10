@@ -1,10 +1,10 @@
 <script lang="ts">
 	import '../app.css';
 	import { company } from '../fake';
-	import { cart } from '../stores/cart';
-	import { products } from '../stores/cart';
-	import { formatter } from '../stores/cart';
+	import { cart } from '../stores/cart';	
 	import { total } from '../stores/cart';
+	import Login from '../components/Login.svelte'
+
 	let homeActive: string;
 	let productsActive: string;
 	if (typeof location !== 'undefined') {
@@ -29,6 +29,13 @@
 			}
 		}
 		total.update((n) => n + price);
+	}
+	let modal: HTMLDialogElement;
+  function showCart() {
+		modal.showModal();
+	}
+	function closeCart() {
+		modal.close();
 	}
 	function removeItem(id: number, price: number) {
 		for (const i in $cart) {
@@ -55,13 +62,6 @@
 		}
 	}
 	let companyName = company.name;
-	let modal: HTMLDialogElement;
-	function showCart() {
-		modal.showModal();
-	}
-	function closeCart() {
-		modal.close();
-	}
 </script>
 
 <main>
@@ -116,54 +116,10 @@
 		</div>
 	</header>
 	<div class="space wave-down" />
-	<dialog class="bg-nord2 text-nord6 border-2 w-96 border-nord6" bind:this={modal}>
-		<div class="overflow-auto">
+	<dialog class="bg-nord3 text-nord6 border-2 w-96 border-nord6" bind:this={modal}>
+		<div class="overflow-auto p-2">
 			<button on:click={closeCart}> <span class="material-symbols-outlined"> close </span></button>
-			<h1 class="text-3xl">Cart:</h1>
-			{#if $cart.length > 0}
-				<div class="h-96 overflow-auto">
-					{#each $cart as index}
-						<div
-							class="border-4 border-nord0 h-80 w-58 rounded-md flex flex-col items-center overflow-auto text-center sm:h-96"
-						>
-							<img src={products[index.id].src} alt={products[index.id].name} class="h-48 w-full" />
-							<div>
-								<h1 class="text-3xl font-bold text-nord6">{products[index.id].name}</h1>
-								<p class="text-nord6 text-lg">Price: {products[index.id].price}</p>
-							</div>
-							<button class="text-2xl text-nord6">
-								<div class="flex items-center  mt-3">
-									<div class="mr-3">
-										<button
-											class="bg-gray-300 w-8 h-8 text-center hover:bg-gray-400"
-											on:click={() => {
-												removeItem(products[index.id].id, products[index.id].rawPrice);
-											}}><p class="text-2xl text-black">-</p></button
-										>
-									</div>
-									<div class="text-3xl mr-3">{index.quantity}</div>
-									<div>
-										<button class="bg-gray-300 w-8 h-8 text-center hover:bg-gray-400"
-											><p
-												class="text-2xl text-black"
-												on:click={() => {
-													addItem(products[index.id].id, products[index.id].rawPrice);
-												}}
-											>
-												+
-											</p></button
-										>
-									</div>
-								</div>
-							</button>
-						</div>
-					{/each}
-				</div>
-				<div class="mb-5">
-					<h1>Final:</h1>
-					<h1 class="fixed">{formatter.format($total)}</h1>
-				</div>
-			{/if}
+			<Login addItem={addItem} removeItem={removeItem} />
 		</div>
 	</dialog>
 </main>
