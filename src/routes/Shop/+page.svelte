@@ -1,14 +1,43 @@
 <script lang="ts">
 	import { products } from '../../stores/cart';
-	import { cart } from '../../stores/cart';
-	import { total } from '../../stores/cart';
-	function addToCart(id: number, price: number) {
+	import { cart, total } from '../../stores/cart';
+	import { user, db } from '../../firebase';
+	import { collection, addDoc, query, where, getDocs, deleteDoc } from 'firebase/firestore';
+	async function getTheUid() {
+		const q = query(collection(db, 'carts'), where('uid', '==', $user!.uid));
+		const querySnapshot = await getDocs(q);
+		let temp: { id: number; quantity: number }[] = [];
+		let totalTemp = 0;
+		querySnapshot.forEach((doc) => {
+			temp.push(doc.data().data);
+			if (doc.data().total > totalTemp) {
+				totalTemp = doc.data().total;
+			}
+		});
+		total.set(totalTemp);
+		return temp;
+	}
+
+	async function addToCart(id: number, price: number) {
+		let res = await getTheUid();
+		cart.set(res);
 		if ($cart.some((e) => e.id === id)) {
 			for (const i in $cart) {
 				if ($cart[i].id == id) {
 					cart.update((n) => {
 						n[i].quantity++;
 						return n;
+					});
+					total.update((n) => n + price);
+					const q = query(collection(db, 'carts'), where('data.id', '==', id));
+					const querySnapshot = await getDocs(q);
+					querySnapshot.forEach((doc) => {
+						deleteDoc(doc.ref);
+					});
+					addDoc(collection(db, 'carts'), {
+						data: $cart[parseInt(i)],
+						uid: $user!.uid,
+						total: $total
 					});
 				}
 			}
@@ -17,8 +46,9 @@
 				n.push({ id, quantity: 1 });
 				return n;
 			});
+			total.update((n) => n + price);
+			addDoc(collection(db, 'carts'), { data: $cart.at(-1), uid: $user!.uid, total: $total });
 		}
-		total.update((n) => n + price);
 	}
 </script>
 
