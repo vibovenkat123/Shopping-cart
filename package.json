@@ -33,10 +33,5 @@
 		"typescript": "^4.7.4",
 		"vite": "^3.1.0"
 	},
-	"type": "module",
-	"dependencies": {
-		"firebase": "^9.11.0",
-		"rxfire": "^6.0.3",
-		"rxjs": "^7.5.7"
-	}
+	"type": "module"
 }

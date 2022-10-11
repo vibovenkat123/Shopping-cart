@@ -1,16 +1,16 @@
 <script lang="ts">
 	import '../app.css';
 	import { company } from '../fake';
-	import { cart } from '../stores/cart';	
+	import { cart } from '../stores/cart';
 	import { total } from '../stores/cart';
-	import Login from '../components/Login.svelte'
+	import Login from '../components/Login.svelte';
 	import Profile from '../components/Profile.svelte';
-	import {signInWithPopup} from 'firebase/auth'
-	import {auth,provider} from '../firebase'
+	import { signInWithPopup } from 'firebase/auth';
+	import { auth, provider, user, db } from '../firebase';
+	import { collection, query, where, getDocs, addDoc, deleteDoc } from 'firebase/firestore';
 
 	let homeActive: string;
 	let productsActive: string;
-	let user: any;
 	if (typeof location !== 'undefined') {
 		if (location.pathname == '/Shop') {
 			productsActive = 'underline';
@@ -23,34 +23,62 @@
 			homeActive = 'none';
 		}
 	}
-	function addItem(id: number, price: number) {
+	async function addItem(id: number, price: number) {
+		let index = 1;
 		for (const i in $cart) {
 			if ($cart[i].id == id) {
 				cart.update((n) => {
 					n[i].quantity++;
 					return n;
 				});
+				index = parseInt(i);
 			}
 		}
 		total.update((n) => n + price);
+		const q = query(collection(db, 'carts'), where('data.id', '==', id));
+		const querySnapshot = await getDocs(q);
+		querySnapshot.forEach((doc) => {
+			deleteDoc(doc.ref);
+		});
+		addDoc(collection(db, 'carts'), { data: $cart[index], uid: $user!.uid, total: $total });
 	}
 	let modal: HTMLDialogElement;
-  function showCart() {
+	async function showCart() {
+		let res = await getTheUid();
+		cart.set(res);
 		modal.showModal();
 	}
 	function closeCart() {
 		modal.close();
 	}
-	function removeItem(id: number, price: number) {
+	async function getTheUid() {
+		const q = query(collection(db, 'carts'), where('uid', '==', $user!.uid));
+		const querySnapshot = await getDocs(q);
+		let temp: { id: number; quantity: number }[] = [];
+		let totalTemp = 0;
+		querySnapshot.forEach((doc) => {
+			temp.push(doc.data().data);
+			if (doc.data().total > totalTemp) {
+				totalTemp = doc.data().total;
+			}
+		});
+		total.set(totalTemp);
+		return temp;
+	}
+	async function removeItem(id: number, price: number) {
 		for (const i in $cart) {
 			if ($cart[i].id == id) {
 				if ($cart[i].quantity <= 1) {
-					console.log(i);
 					cart.update((n) => {
 						n.splice(parseInt(i), 1);
 						return n;
 					});
 					total.update((n) => n - price);
+					const q = query(collection(db, 'carts'), where('data.id', '==', id));
+					const querySnapshot = await getDocs(q);
+					querySnapshot.forEach((doc) => {
+						deleteDoc(doc.ref);
+					});
 				} else {
 					cart.update((n) => {
 						n[i].quantity--;
@@ -58,8 +86,20 @@
 					});
 					total.update((n) => n - price);
 					if (isNaN($total)) {
+						console.log('yo');
 						total.set(Infinity);
+						console.log($total);
 					}
+					const q = query(collection(db, 'carts'), where('data.id', '==', id));
+					const querySnapshot = await getDocs(q);
+					querySnapshot.forEach((doc) => {
+						deleteDoc(doc.ref);
+					});
+					addDoc(collection(db, 'carts'), {
+						data: $cart[parseInt(i)],
+						uid: $user!.uid,
+						total: $total
+					});
 					break;
 				}
 			}
@@ -110,13 +150,21 @@
 					style="text-decoration: {productsActive}; text-underline-offset: 8px;">Shop</a
 				>
 				{#if $user}
-				<Profile name={$user.displayName} imageURL={$user.photoURL}/>
-			{:else}
-				<button on:click={() => {signInWithPopup(auth,provider)}}>Login</button>
-			{/if}
+					<Profile name={$user.displayName} imageURL={$user.photoURL} />
+				{:else}
+					<button
+						on:click={() => {
+							signInWithPopup(auth, provider);
+						}}>Login</button
+					>
+				{/if}
 				<div>
 					<button aria-label="cart" on:click={showCart}>
-						<span class="material-symbols-outlined align-bottom" style="font-size: 28px;" aria-hidden="true">
+						<span
+							class="material-symbols-outlined align-bottom"
+							style="font-size: 28px;"
+							aria-hidden="true"
+						>
 							shopping_cart
 						</span>
 					</button>
@@ -128,7 +176,7 @@
 	<dialog class="bg-nord3 text-nord6 border-2 w-96 border-nord6" bind:this={modal}>
 		<div class="overflow-auto p-2">
 			<button on:click={closeCart}> <span class="material-symbols-outlined"> close </span></button>
-			<Login addItem={addItem} removeItem={removeItem} bind:user={user}/>
+			<Login {addItem} {removeItem} />
 		</div>
 	</dialog>
 </main>

@@ -4,7 +4,7 @@ import pkg from './package.json';
 
 const config: UserConfig = {
 	plugins: [sveltekit()],
-	ssr:{
+	ssr: {
 		noExternal: Object.keys(pkg.dependencies || {})
 	}
 };
