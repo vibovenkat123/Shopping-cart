@@ -191,6 +191,8 @@
 		background-size: cover;
 	}
 	.wave-down {
+		position: relative;
+		top: 0px;
 		background-image: url('../images/waves-down.svg');
 	}
 </style>
